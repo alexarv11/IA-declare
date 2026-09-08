@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toolkit de Declaración de IA - Editorial Tecnológica de Costa Rica</title>
+  <style>
+    :root {
+      --primary: #002b49;
+      --accent: #0073e6;
+      --bg: #f4f6f9;
+      --card-bg: #ffffff;
+      --border: #dcdfe6;
+      --text: #2c3e50;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-top: 0;
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 12px;
+    }
+
+    p.subtitle {
+      color: #606266;
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-weight: bold;
+      color: var(--primary);
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .checkbox-card {
+      border: 1px solid var(--border);
+      padding: 12px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fafafa;
+    }
+
+    .checkbox-card:hover {
+      border-color: var(--accent);
+      background: #f0f7ff;
+    }
+
+    .checkbox-card input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .dynamic-fields {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+
+    .use-item {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .use-item h4 {
+      margin: 0 0 10px 0;
+      color: var(--primary);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 15px;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #4a5568;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+    }
+
+    .output-section {
+      margin-top: 30px;
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    .output-section h3 {
+      margin-top: 0;
+      color: #38bdf8;
+      font-size: 1.2rem;
+    }
+
+    .output-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      color: #f1f5f9;
+    }
+
+    .badge-container {
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-copy {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-copy:hover {
+      background: #005bb5;
+    }
+
+    .btn-secondary {
+      background: #475569;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Toolkit de Declaración de IA</h1>
+  <p class="subtitle">Seleccione el propósito de uso y la herramienta para generar la declaración consolidada y sus insignias pictográficas.</p>
+
+  <div class="section-title">1. Indique el propósito o fin con el que utilizó herramientas de IA:</div>
+  <div class="options-grid">
+    <label class="checkbox-card">
+      <input type="checkbox" id="chk_no" onchange="toggleNoUse()">
+      <span><strong>Sin uso de IA</strong> (IA-NO)</span>
+    </label>
+    <label class="checkbox-card use-chk">
+      <input type="checkbox" value="IA-EST" id="chk_est" onchange="updateForm()">
+      <span>Revisión gramatical / Estilo</span>
+    </label>
+    <label class="checkbox-card use-chk">
+      <input type="checkbox" value="IA-RED" id="chk_red" onchange="updateForm()">
+      <span>Apoyo en Redacción</span>
+    </label>
+    <label class="checkbox-card use-chk">
+      <input type="checkbox" value="IA-TRAD" id="chk_trad" onchange="updateForm()">
+      <span>Traducción de textos</span>
+    </label>
+    <label class="checkbox-card use-chk">
+      <input type="checkbox" value="IA-DAT" id="chk_dat" onchange="updateForm()">
+      <span>Análisis de datos</span>
+    </label>
+    <label class="checkbox-card use-chk">
+      <input type="checkbox" value="IA-IMG" id="chk_img" onchange="updateForm()">
+      <span>Imágenes / Gráficos</span>
+    </label>
+    <label class="checkbox-card use-chk">
+      <input type="checkbox" value="IA-DOC" id="chk_doc" onchange="updateForm()">
+      <span>Búsqueda bibliográfica</span>
+    </label>
+  </div>
+
+  <div id="dynamicContainer" class="dynamic-fields"></div>
+
+  <div class="output-section">
+    <h3>2. Declaración generada:</h3>
+    
+    <label style="color:#94a3b8">Texto Legible para el Manuscrito (MS Word / Secciones finales):</label>
+    <div class="output-box" id="textOutput">Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la elaboración de este trabajo.</div>
+    <div class="btn-group">
+      <button class="btn-copy" onclick="copyToClipboard('textOutput')">Copiar Texto Legible</button>
+    </div>
+
+    <br>
+    <label style="color:#94a3b8">Insignia Pictográfica Modular (SVG para InDesign / OJS / PDF):</label>
+    <div class="badge-container" id="visualPreview"></div>
+    <div class="btn-group">
+      <button class="btn-secondary" onclick="copySVGToClipboard()">Copiar Código SVG</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const categories = {
+    'IA-EST': { title: 'Revisión gramatical / Estilo', defaultTool: 'ChatGPT-4o', verb: 'la revisión gramatical y de estilo' },
+    'IA-RED': { title: 'Apoyo en Redacción', defaultTool: 'ChatGPT-4o', verb: 'el apoyo en la redacción del texto' },
+    'IA-TRAD': { title: 'Traducción de textos', defaultTool: 'DeepL Pro', verb: 'la traducción del manuscrito' },
+    'IA-DAT': { title: 'Análisis de datos', defaultTool: 'Python / Scikit-learn', verb: 'el procesamiento y análisis de datos' },
+    'IA-IMG': { title: 'Generación de imágenes / Gráficos', defaultTool: 'Midjourney v6', verb: 'la generación de recursos visuales y gráficos' },
+    'IA-DOC': { title: 'Búsqueda bibliográfica', defaultTool: 'SciSpace', verb: 'la búsqueda y organización bibliográfica' }
+  };
+
+  const svgIcons = {
+    'IA-NO': '<path d="M12 14a3 3 0 100-6 3 3 0 000 6zM5 19a7 7 0 0114 0" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none"/>',
+    'IA-EST': '<path d="M15 6l3 3L9 18H6v-3L15 6z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
+    'IA-RED': '<path d="M7 6h10M7 10h10M7 14h6M15 17l3 3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none"/>',
+    'IA-TRAD': '<path d="M5 8h10M10 5v3M7 16c2-1 3-3 4-6M13 16l3-8 3 8M14 14h4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
+    'IA-DAT': '<path d="M6 18v-4M12 18v-8M18 18v-12" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>',
+    'IA-IMG': '<circle cx="8.5" cy="8.5" r="1.5" fill="#ffffff"/><path d="M21 15l-5-5L5 21" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="3" y="3" width="18" height="18" rx="3" stroke="#ffffff" stroke-width="2" fill="none"/>',
+    'IA-DOC': '<path d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>'
+  };
+
+  let rawSVGCode = '';
+
+  function toggleNoUse() {
+    const isNoUse = document.getElementById('chk_no').checked;
+    const checkboxes = document.querySelectorAll('.use-chk input');
+    checkboxes.forEach(cb => {
+      cb.disabled = isNoUse;
+      if (isNoUse) cb.checked = false;
+    });
+    updateForm();
+  }
+
+  function updateForm() {
+    const container = document.getElementById('dynamicContainer');
+    container.innerHTML = '';
+
+    if (document.getElementById('chk_no').checked) {
+      generateResult();
+      return;
+    }
+
+    const selected = document.querySelectorAll('.use-chk input:checked');
+    if (selected.length > 0) {
+      container.innerHTML = '<div class="section-title">2. Especifique la herramienta y el nivel de aporte:</div>';
+    }
+
+    selected.forEach(cb => {
+      const code = cb.value;
+      const cat = categories[code];
+
+      const div = document.createElement('div');
+      div.className = 'use-item';
+      div.innerHTML = `
+        <h4>${cat.title} (${code})</h4>
+        <div class="form-row">
+          <div>
+            <label>Herramienta utilizada:</label>
+            <input type="text" id="tool_${code}" value="${cat.defaultTool}" oninput="generateResult()">
+          </div>
+          <div>
+            <label>Nivel de Aporte de la IA:</label>
+            <select id="aporte_${code}" onchange="generateResult()">
+              <option value="BA">Bajo (Sugerencias o correcciones)</option>
+              <option value="ME" selected>Medio (Asistencia en borradores)</option>
+              <option value="AL">Alto (Generación / Procesamiento principal)</option>
+            </select>
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+
+    generateResult();
+  }
+
+  function generateResult() {
+    const textOutput = document.getElementById('textOutput');
+    const visualPreview = document.getElementById('visualPreview');
+
+    if (document.getElementById('chk_no').checked) {
+      textOutput.innerText = "Declaración de uso de IA: Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la preparación de este manuscrito.";
+      rawSVGCode = generateCircularSVG("Sin uso de IA", [], true);
+      visualPreview.innerHTML = rawSVGCode;
+      return;
+    }
+
+    const selected = document.querySelectorAll('.use-chk input:checked');
+    if (selected.length === 0) {
+      textOutput.innerText = "Por favor, seleccione al menos una opción para generar la declaración.";
+      visualPreview.innerHTML = '<span style="color:#64748b; font-size:0.9rem;">Seleccione un propósito para ver la insignia visual.</span>';
+      rawSVGCode = '';
+      return;
+    }
+
+    // --- CONSOLIDACIÓN POR HERRAMIENTA ---
+    let toolMap = {};
+
+    selected.forEach(cb => {
+      const code = cb.value;
+      const toolName = (document.getElementById(`tool_${code}`)?.value || 'IA').trim();
+      const aporte = document.getElementById(`aporte_${code}`)?.value || 'ME';
+
+      if (!toolMap[toolName]) {
+        toolMap[toolName] = [];
+      }
+      
+      toolMap[toolName].push({
+        code: code,
+        verb: categories[code].verb,
+        aporteTexto: obtenerTextoAporteTexto(aporte),
+        aporte: aporte
+      });
+    });
+
+    // 1. Redacción del Texto Legible
+    let proseClauses = [];
+    for (let [tool, uses] of Object.entries(toolMap)) {
+      if (uses.length === 1) {
+        proseClauses.push(`${tool} para ${uses[0].verb} con un nivel de aporte ${uses[0].aporteTexto}`);
+      } else {
+        let subTasks = uses.map(u => `${u.verb} (aporte ${u.aporteTexto})`);
+        let subTasksText = subTasks.slice(0, -1).join(", ") + " y " + subTasks[subTasks.length - 1];
+        proseClauses.push(`${tool} para múltiples tareas: ${subTasksText}`);
+      }
+    }
+
+    let finalProse = "Declaración de uso de IA: Los autores declaran haber utilizado ";
+    if (proseClauses.length === 1) {
+      finalProse += proseClauses[0] + ".";
+    } else {
+      finalProse += proseClauses.slice(0, -1).join("; ") + "; y " + proseClauses[proseClauses.length - 1] + ".";
+    }
+
+    // 2. Generación del SVG Consolidado
+    let svgAccumulator = '';
+    for (let [toolName, uses] of Object.entries(toolMap)) {
+      svgAccumulator += generateCircularSVG(toolName, uses, false) + ' ';
+    }
+
+    textOutput.innerText = finalProse;
+    visualPreview.innerHTML = svgAccumulator;
+    rawSVGCode = svgAccumulator;
+  }
+
+  function obtenerTextoAporte(aporte) {
+    if (aporte === 'BA') return 'Bajo';
+    if (aporte === 'ME') return 'Medio';
+    return 'Alto';
+  }
+
+  function obtenerTextoAporteTexto(aporte) {
+    if (aporte === 'BA') return 'bajo';
+    if (aporte === 'ME') return 'medio';
+    return 'alto';
+  }
+
+  function generateCircularSVG(toolName, uses, isNoUse) {
+    if (isNoUse) {
+      return `
+      <svg xmlns="http://www.w3.org/2000/svg" width="180" height="32" viewBox="0 0 180 32" role="img">
+        <g>
+          <circle cx="16" cy="16" r="14" fill="#475569" stroke="#64748B" stroke-width="2"/>
+          ${svgIcons['IA-NO']}
+          <rect x="36" y="4" width="138" height="24" rx="12" fill="#1E293B"/>
+          <text x="46" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="bold">IA-NO: Humano</text>
+        </g>
+      </svg>`.trim();
+    }
+
+    // Insignia individual para una sola función
+    if (uses.length === 1) {
+      let u = uses[0];
+      let colorAporte = u.aporte === 'BA' ? '#64748B' : (u.aporte === 'ME' ? '#D97706' : '#DC2626');
+      let textoAporte = obtenerTextoAporte(u.aporte);
+      let iconPath = svgIcons[u.code] || svgIcons['IA-RED'];
+      let labelText = `${u.code} · ${toolName} (${textoAporte})`;
+      let approxWidth = Math.max(160, labelText.length * 7.2 + 45);
+
+      let dots = u.aporte === 'BA' ? '<circle cx="16" cy="27" r="1.5" fill="#FFFFFF"/>' :
+                 u.aporte === 'ME' ? '<circle cx="13" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="19" cy="27" r="1.5" fill="#FFFFFF"/>' :
+                 '<circle cx="10" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="16" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="22" cy="27" r="1.5" fill="#FFFFFF"/>';
+
+      return `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${approxWidth}" height="32" viewBox="0 0 ${approxWidth} 32" role="img">
+        <g>
+          <rect x="16" y="4" width="${approxWidth - 18}" height="24" rx="12" fill="#002B49"/>
+          <text x="38" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">${u.code} · ${toolName} <tspan fill="${colorAporte}">(${textoAporte})</tspan></text>
+          <circle cx="16" cy="16" r="14" fill="${colorAporte}" stroke="#FFFFFF" stroke-width="1.5"/>
+          <g transform="translate(4, 4) scale(0.66)">${iconPath}</g>
+          ${dots}
+        </g>
+      </svg>`.trim();
+    }
+
+    // Insignia Compuesta (para cuando una misma herramienta cumple varias funciones)
+    let circlesHTML = '';
+    let codesText = [];
+
+    uses.forEach((u, idx) => {
+      let cx = 16 + (idx * 24);
+      let colorAporte = u.aporte === 'BA' ? '#64748B' : (u.aporte === 'ME' ? '#D97706' : '#DC2626');
+      let iconPath = svgIcons[u.code] || svgIcons['IA-RED'];
+
+      circlesHTML += `
+        <g>
+          <circle cx="${cx}" cy="16" r="13" fill="${colorAporte}" stroke="#FFFFFF" stroke-width="1.5"/>
+          <g transform="translate(${cx - 12}, 4) scale(0.66)">${iconPath}</g>
+        </g>`;
+      
+      codesText.push(`${u.code} (${obtenerTextoAporte(u.aporte)})`);
+    });
+
+    let startTextX = 16 + (uses.length * 24) + 8;
+    let labelText = `${toolName} · ${codesText.join(' | ')}`;
+    let totalWidth = startTextX + (labelText.length * 6.8) + 15;
+
+    return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="32" viewBox="0 0 ${totalWidth} 32" role="img">
+      <g>
+        <rect x="16" y="4" width="${totalWidth - 18}" height="24" rx="12" fill="#002B49"/>
+        <text x="${startTextX}" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">${toolName} · <tspan fill="#94A3B8">${codesText.join(' | ')}</tspan></text>
+        ${circlesHTML}
+      </g>
+    </svg>`.trim();
+  }
+
+  function copyToClipboard(elementId) {
+    const text = document.getElementById(elementId).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("¡Texto copiado al portapapeles!");
+    });
+  }
+
+  function copySVGToClipboard() {
+    if (!rawSVGCode) {
+      alert("No hay código SVG generado para copiar.");
+      return;
+    }
+    navigator.clipboard.writeText(rawSVGCode).then(() => {
+      alert("¡Código SVG copiado al portapapeles!");
+    });
+  }
+
+  generateResult();
+</script>
+
+</body>
+</html>
