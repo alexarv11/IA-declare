@@ -85,6 +85,19 @@
       cursor: pointer;
     }
 
+    .supervision-box {
+      background: #eef6ff;
+      border: 1px solid #b3d8ff;
+      border-left: 4px solid #0073e6;
+      padding: 12px 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
     .dynamic-fields {
       border-top: 1px solid var(--border);
       padding-top: 20px;
@@ -192,18 +205,19 @@
       background: #005bb5;
     }
 
-    .btn-secondary {
-      background: #475569;
+    .btn-download {
+      background: #10b981;
       color: white;
       border: none;
       padding: 8px 16px;
       border-radius: 6px;
       font-weight: 600;
       cursor: pointer;
+      transition: background 0.2s;
     }
 
-    .btn-secondary:hover {
-      background: #334155;
+    .btn-download:hover {
+      background: #059669;
     }
   </style>
 </head>
@@ -211,7 +225,7 @@
 
 <div class="container">
   <h1>Toolkit de Declaración de IA</h1>
-  <p class="subtitle">Seleccione el propósito de uso y la herramienta para generar la declaración consolidada y sus insignias pictográficas.</p>
+  <p class="subtitle">Seleccione el propósito de uso y la herramienta para generar la declaración consolidada con cláusula de responsabilidad autoral y sus insignias pictográficas.</p>
 
   <div class="section-title">1. Indique el propósito o fin con el que utilizó herramientas de IA:</div>
   <div class="options-grid">
@@ -245,6 +259,13 @@
     </label>
   </div>
 
+  <div class="supervision-box" id="supervisionContainer">
+    <input type="checkbox" id="chk_supervision" checked onchange="generateResult()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+    <label for="chk_supervision" style="margin: 0; cursor: pointer; font-weight: normal; color: var(--primary);">
+      <strong>Incluir cláusula e insignia de supervisión autoral:</strong> Declara que los autores revisaron minuciosamente, validaron y asumen plena responsabilidad por el contenido final generado o asistido por IA.
+    </label>
+  </div>
+
   <div id="dynamicContainer" class="dynamic-fields"></div>
 
   <div class="output-section">
@@ -257,10 +278,10 @@
     </div>
 
     <br>
-    <label style="color:#94a3b8">Insignia Pictográfica Modular (SVG para InDesign / OJS / PDF):</label>
+    <label style="color:#94a3b8">Insignia Pictográfica Modular (Gráfico SVG para InDesign / OJS / PDF):</label>
     <div class="badge-container" id="visualPreview"></div>
     <div class="btn-group">
-      <button class="btn-secondary" onclick="copySVGToClipboard()">Copiar Código SVG</button>
+      <button class="btn-download" onclick="downloadSVG()">Descargar Archivo SVG</button>
     </div>
   </div>
 </div>
@@ -268,10 +289,10 @@
 <script>
   const categories = {
     'IA-EST': { title: 'Revisión gramatical / Estilo', defaultTool: 'ChatGPT-4o', verb: 'la revisión gramatical y de estilo' },
-    'IA-RED': { title: 'Apoyo en Redacción', defaultTool: 'ChatGPT-4o', verb: 'el apoyo en la redacción del texto' },
-    'IA-TRAD': { title: 'Traducción de textos', defaultTool: 'DeepL Pro', verb: 'la traducción del manuscrito' },
+    'IA-RED': { title: 'Apoyo en Redacción', defaultTool: 'ChatGPT-4o', verb: 'el apoyo en la estructura y redacción del texto' },
+    'IA-TRAD': { title: 'Traducción de textos', defaultTool: 'DeepL Pro', verb: 'la traducción de secciones del manuscrito' },
     'IA-DAT': { title: 'Análisis de datos', defaultTool: 'Python / Scikit-learn', verb: 'el procesamiento y análisis de datos' },
-    'IA-IMG': { title: 'Generación de imágenes / Gráficos', defaultTool: 'Midjourney v6', verb: 'la generación de recursos visuales y gráficos' },
+    'IA-IMG': { title: 'Generación de imágenes / Gráficos', defaultTool: 'Midjourney v6', verb: 'la generación de recursos visuales' },
     'IA-DOC': { title: 'Búsqueda bibliográfica', defaultTool: 'SciSpace', verb: 'la búsqueda y organización bibliográfica' }
   };
 
@@ -285,15 +306,24 @@
     'IA-DOC': '<path d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>'
   };
 
-  let rawSVGCode = '';
+  let rawSVGContent = '';
 
   function toggleNoUse() {
     const isNoUse = document.getElementById('chk_no').checked;
     const checkboxes = document.querySelectorAll('.use-chk input');
+    const supervisionBox = document.getElementById('supervisionContainer');
+
     checkboxes.forEach(cb => {
       cb.disabled = isNoUse;
       if (isNoUse) cb.checked = false;
     });
+
+    if (isNoUse) {
+      supervisionBox.style.display = 'none';
+    } else {
+      supervisionBox.style.display = 'flex';
+    }
+
     updateForm();
   }
 
@@ -343,11 +373,16 @@
   function generateResult() {
     const textOutput = document.getElementById('textOutput');
     const visualPreview = document.getElementById('visualPreview');
+    const includeSupervision = document.getElementById('chk_supervision').checked;
 
     if (document.getElementById('chk_no').checked) {
-      textOutput.innerText = "Declaración de uso de IA: Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la preparación de este manuscrito.";
-      rawSVGCode = generateCircularSVG("Sin uso de IA", [], true);
-      visualPreview.innerHTML = rawSVGCode;
+      textOutput.innerText = "Declaración de uso de IA: Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la preparación o elaboración de este manuscrito.";
+      let singleSVG = generateCircularSVG("Sin uso de IA", [], true);
+      visualPreview.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${singleSVG.width}" height="${singleSVG.height}" viewBox="0 0 ${singleSVG.width} ${singleSVG.height}">
+          ${singleSVG.code}
+        </svg>`;
+      rawSVGContent = wrapInSingleSVG([singleSVG]);
       return;
     }
 
@@ -355,7 +390,7 @@
     if (selected.length === 0) {
       textOutput.innerText = "Por favor, seleccione al menos una opción para generar la declaración.";
       visualPreview.innerHTML = '<span style="color:#64748b; font-size:0.9rem;">Seleccione un propósito para ver la insignia visual.</span>';
-      rawSVGCode = '';
+      rawSVGContent = '';
       return;
     }
 
@@ -383,9 +418,9 @@
     let proseClauses = [];
     for (let [tool, uses] of Object.entries(toolMap)) {
       if (uses.length === 1) {
-        proseClauses.push(`${tool} para ${uses[0].verb} con un nivel de aporte ${uses[0].aporteTexto}`);
+        proseClauses.push(`${tool} para ${uses[0].verb} (nivel de aporte ${uses[0].aporteTexto})`);
       } else {
-        let subTasks = uses.map(u => `${u.verb} (aporte ${u.aporteTexto})`);
+        let subTasks = uses.map(u => `${u.verb} [aporte ${u.aporteTexto}]`);
         let subTasksText = subTasks.slice(0, -1).join(", ") + " y " + subTasks[subTasks.length - 1];
         proseClauses.push(`${tool} para múltiples tareas: ${subTasksText}`);
       }
@@ -398,15 +433,29 @@
       finalProse += proseClauses.slice(0, -1).join("; ") + "; y " + proseClauses[proseClauses.length - 1] + ".";
     }
 
-    // 2. Generación del SVG Consolidado
-    let svgAccumulator = '';
+    if (includeSupervision) {
+      finalProse += " Todos los resultados e información asistidos por IA fueron revisados, verificados y validados minuciosamente por los autores, quienes asumen plena responsabilidad por la precisión, coherencia e integridad del contenido publicado.";
+    }
+
+    // 2. Generación de fragmentos SVG
+    let svgItems = [];
     for (let [toolName, uses] of Object.entries(toolMap)) {
-      svgAccumulator += generateCircularSVG(toolName, uses, false) + ' ';
+      svgItems.push(generateCircularSVG(toolName, uses, false));
+    }
+
+    if (includeSupervision) {
+      svgItems.push(generateHumanVerifiedBadge());
     }
 
     textOutput.innerText = finalProse;
-    visualPreview.innerHTML = svgAccumulator;
-    rawSVGCode = svgAccumulator;
+    
+    visualPreview.innerHTML = svgItems.map(obj => `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${obj.width}" height="${obj.height}" viewBox="0 0 ${obj.width} ${obj.height}">
+        ${obj.code}
+      </svg>
+    `).join(' ');
+
+    rawSVGContent = wrapInSingleSVG(svgItems);
   }
 
   function obtenerTextoAporte(aporte) {
@@ -421,45 +470,63 @@
     return 'alto';
   }
 
+  function generateHumanVerifiedBadge() {
+    return {
+      width: 160,
+      height: 32,
+      code: `
+        <g>
+          <rect x="16" y="4" width="138" height="24" rx="12" fill="#065F46"/>
+          <text x="38" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="700">HUMAN VERIFIED</text>
+          <circle cx="16" cy="16" r="14" fill="#059669" stroke="#FFFFFF" stroke-width="1.5"/>
+          <g transform="translate(7, 7)">
+            <path d="M13.5 4.5L6.5 11.5L3.5 8.5" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </g>
+        </g>`.trim()
+    };
+  }
+
   function generateCircularSVG(toolName, uses, isNoUse) {
     if (isNoUse) {
-      return `
-      <svg xmlns="http://www.w3.org/2000/svg" width="180" height="32" viewBox="0 0 180 32" role="img">
-        <g>
-          <circle cx="16" cy="16" r="14" fill="#475569" stroke="#64748B" stroke-width="2"/>
-          ${svgIcons['IA-NO']}
-          <rect x="36" y="4" width="138" height="24" rx="12" fill="#1E293B"/>
-          <text x="46" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="bold">IA-NO: Humano</text>
-        </g>
-      </svg>`.trim();
+      return {
+        width: 180,
+        height: 32,
+        code: `
+          <g>
+            <circle cx="16" cy="16" r="14" fill="#475569" stroke="#64748B" stroke-width="2"/>
+            ${svgIcons['IA-NO']}
+            <rect x="36" y="4" width="138" height="24" rx="12" fill="#1E293B"/>
+            <text x="46" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="bold">IA-NO: Humano</text>
+          </g>`.trim()
+      };
     }
 
-    // Insignia individual para una sola función
     if (uses.length === 1) {
       let u = uses[0];
       let colorAporte = u.aporte === 'BA' ? '#64748B' : (u.aporte === 'ME' ? '#D97706' : '#DC2626');
       let textoAporte = obtenerTextoAporte(u.aporte);
       let iconPath = svgIcons[u.code] || svgIcons['IA-RED'];
       let labelText = `${u.code} · ${toolName} (${textoAporte})`;
-      let approxWidth = Math.max(160, labelText.length * 7.2 + 45);
+      let approxWidth = Math.max(160, Math.round(labelText.length * 7.2 + 45));
 
       let dots = u.aporte === 'BA' ? '<circle cx="16" cy="27" r="1.5" fill="#FFFFFF"/>' :
                  u.aporte === 'ME' ? '<circle cx="13" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="19" cy="27" r="1.5" fill="#FFFFFF"/>' :
                  '<circle cx="10" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="16" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="22" cy="27" r="1.5" fill="#FFFFFF"/>';
 
-      return `
-      <svg xmlns="http://www.w3.org/2000/svg" width="${approxWidth}" height="32" viewBox="0 0 ${approxWidth} 32" role="img">
-        <g>
-          <rect x="16" y="4" width="${approxWidth - 18}" height="24" rx="12" fill="#002B49"/>
-          <text x="38" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">${u.code} · ${toolName} <tspan fill="${colorAporte}">(${textoAporte})</tspan></text>
-          <circle cx="16" cy="16" r="14" fill="${colorAporte}" stroke="#FFFFFF" stroke-width="1.5"/>
-          <g transform="translate(4, 4) scale(0.66)">${iconPath}</g>
-          ${dots}
-        </g>
-      </svg>`.trim();
+      return {
+        width: approxWidth,
+        height: 32,
+        code: `
+          <g>
+            <rect x="16" y="4" width="${approxWidth - 18}" height="24" rx="12" fill="#002B49"/>
+            <text x="38" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">${u.code} · ${toolName} <tspan fill="${colorAporte}">(${textoAporte})</tspan></text>
+            <circle cx="16" cy="16" r="14" fill="${colorAporte}" stroke="#FFFFFF" stroke-width="1.5"/>
+            <g transform="translate(4, 4) scale(0.66)">${iconPath}</g>
+            ${dots}
+          </g>`.trim()
+      };
     }
 
-    // Insignia Compuesta (para cuando una misma herramienta cumple varias funciones)
     let circlesHTML = '';
     let codesText = [];
 
@@ -479,16 +546,37 @@
 
     let startTextX = 16 + (uses.length * 24) + 8;
     let labelText = `${toolName} · ${codesText.join(' | ')}`;
-    let totalWidth = startTextX + (labelText.length * 6.8) + 15;
+    let totalWidth = Math.round(startTextX + (labelText.length * 6.8) + 15);
 
-    return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="32" viewBox="0 0 ${totalWidth} 32" role="img">
-      <g>
-        <rect x="16" y="4" width="${totalWidth - 18}" height="24" rx="12" fill="#002B49"/>
-        <text x="${startTextX}" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">${toolName} · <tspan fill="#94A3B8">${codesText.join(' | ')}</tspan></text>
-        ${circlesHTML}
-      </g>
-    </svg>`.trim();
+    return {
+      width: totalWidth,
+      height: 32,
+      code: `
+        <g>
+          <rect x="16" y="4" width="${totalWidth - 18}" height="24" rx="12" fill="#002B49"/>
+          <text x="${startTextX}" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">${toolName} · <tspan fill="#94A3B8">${codesText.join(' | ')}</tspan></text>
+          ${circlesHTML}
+        </g>`.trim()
+    };
+  }
+
+  function wrapInSingleSVG(svgObjects) {
+    let gap = 12;
+    let currentX = 0;
+    let totalWidth = 0;
+    let combinedGroups = '';
+
+    svgObjects.forEach(obj => {
+      combinedGroups += `<g transform="translate(${currentX}, 0)">${obj.code}</g>\n`;
+      currentX += obj.width + gap;
+    });
+
+    totalWidth = currentX > 0 ? currentX - gap : 0;
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="32" viewBox="0 0 ${totalWidth} 32" role="img">
+  ${combinedGroups}
+</svg>`.trim();
   }
 
   function copyToClipboard(elementId) {
@@ -498,14 +586,21 @@
     });
   }
 
-  function copySVGToClipboard() {
-    if (!rawSVGCode) {
-      alert("No hay código SVG generado para copiar.");
+  function downloadSVG() {
+    if (!rawSVGContent) {
+      alert("No hay insignias generadas para descargar.");
       return;
     }
-    navigator.clipboard.writeText(rawSVGCode).then(() => {
-      alert("¡Código SVG copiado al portapapeles!");
-    });
+
+    const blob = new Blob([rawSVGContent], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'insignia_declaracion_IA.svg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
   generateResult();
