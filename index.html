@@ -161,6 +161,22 @@
       font-size: 1.2rem;
     }
 
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .format-selector {
+      background: #334155;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+    }
+
     .output-box {
       background: #0f172a;
       border: 1px solid #334155;
@@ -271,7 +287,14 @@
   <div class="output-section">
     <h3>2. Declaración generada:</h3>
     
-    <label style="color:#94a3b8">Texto Legible para el Manuscrito (MS Word / Secciones finales):</label>
+    <div class="output-header">
+      <label style="color:#94a3b8">Texto Legible para el Manuscrito (MS Word / Secciones finales):</label>
+      <select id="textFormatSelect" class="format-selector" onchange="generateResult()">
+        <option value="concise" selected>Estilo Conciso / Resumido</option>
+        <option value="descriptive">Estilo Descriptivo / Extenso</option>
+      </select>
+    </div>
+    
     <div class="output-box" id="textOutput">Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la elaboración de este trabajo.</div>
     <div class="btn-group">
       <button class="btn-copy" onclick="copyToClipboard('textOutput')">Copiar Texto Legible</button>
@@ -288,12 +311,12 @@
 
 <script>
   const categories = {
-    'IA-EST': { title: 'Revisión gramatical / Estilo', defaultTool: 'ChatGPT-4o', verb: 'la revisión gramatical y de estilo' },
-    'IA-RED': { title: 'Apoyo en Redacción', defaultTool: 'ChatGPT-4o', verb: 'el apoyo en la estructura y redacción del texto' },
-    'IA-TRAD': { title: 'Traducción de textos', defaultTool: 'DeepL Pro', verb: 'la traducción de secciones del manuscrito' },
-    'IA-DAT': { title: 'Análisis de datos', defaultTool: 'Python / Scikit-learn', verb: 'el procesamiento y análisis de datos' },
-    'IA-IMG': { title: 'Generación de imágenes / Gráficos', defaultTool: 'Midjourney v6', verb: 'la generación de recursos visuales' },
-    'IA-DOC': { title: 'Búsqueda bibliográfica', defaultTool: 'SciSpace', verb: 'la búsqueda y organización bibliográfica' }
+    'IA-EST': { title: 'Revisión gramatical / Estilo', shortTitle: 'estilo', defaultTool: 'ChatGPT-4o', verb: 'la revisión gramatical y de estilo' },
+    'IA-RED': { title: 'Apoyo en Redacción', shortTitle: 'redacción', defaultTool: 'ChatGPT-4o', verb: 'el apoyo en la estructura y redacción' },
+    'IA-TRAD': { title: 'Traducción de textos', shortTitle: 'traducción', defaultTool: 'DeepL Pro', verb: 'la traducción de secciones' },
+    'IA-DAT': { title: 'Análisis de datos', shortTitle: 'análisis de datos', defaultTool: 'Python / Scikit-learn', verb: 'el procesamiento y análisis de datos' },
+    'IA-IMG': { title: 'Generación de imágenes / Gráficos', shortTitle: 'imágenes', defaultTool: 'Midjourney v6', verb: 'la generación de recursos visuales' },
+    'IA-DOC': { title: 'Búsqueda bibliográfica', shortTitle: 'búsqueda bibliográfica', defaultTool: 'SciSpace', verb: 'la búsqueda y organización bibliográfica' }
   };
 
   const svgIcons = {
@@ -374,9 +397,10 @@
     const textOutput = document.getElementById('textOutput');
     const visualPreview = document.getElementById('visualPreview');
     const includeSupervision = document.getElementById('chk_supervision').checked;
+    const textFormat = document.getElementById('textFormatSelect').value;
 
     if (document.getElementById('chk_no').checked) {
-      textOutput.innerText = "Declaración de uso de IA: Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la preparación o elaboración de este manuscrito.";
+      textOutput.innerText = "Declaración de uso de IA: Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la preparación de este manuscrito.";
       let singleSVG = generateCircularSVG("Sin uso de IA", [], true);
       visualPreview.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${singleSVG.width}" height="${singleSVG.height}" viewBox="0 0 ${singleSVG.width} ${singleSVG.height}">
@@ -408,6 +432,7 @@
       
       toolMap[toolName].push({
         code: code,
+        shortTitle: categories[code].shortTitle,
         verb: categories[code].verb,
         aporteTexto: obtenerTextoAporteTexto(aporte),
         aporte: aporte
@@ -415,26 +440,42 @@
     });
 
     // 1. Redacción del Texto Legible
-    let proseClauses = [];
-    for (let [tool, uses] of Object.entries(toolMap)) {
-      if (uses.length === 1) {
-        proseClauses.push(`${tool} para ${uses[0].verb} (nivel de aporte ${uses[0].aporteTexto})`);
-      } else {
-        let subTasks = uses.map(u => `${u.verb} [aporte ${u.aporteTexto}]`);
-        let subTasksText = subTasks.slice(0, -1).join(", ") + " y " + subTasks[subTasks.length - 1];
-        proseClauses.push(`${tool} para múltiples tareas: ${subTasksText}`);
+    let finalProse = "";
+
+    if (textFormat === 'concise') {
+      // FORMATO CONCISO / RESUMIDO
+      let toolSummaries = [];
+      for (let [tool, uses] of Object.entries(toolMap)) {
+        let tasks = uses.map(u => `${u.shortTitle} [${u.code}, aporte ${u.aporteTexto}]`).join(", ");
+        toolSummaries.push(`${tool} (${tasks})`);
       }
-    }
-
-    let finalProse = "Declaración de uso de IA: Los autores declaran haber utilizado ";
-    if (proseClauses.length === 1) {
-      finalProse += proseClauses[0] + ".";
+      finalProse = "Uso de IA: " + toolSummaries.join("; ") + ".";
+      if (includeSupervision) {
+        finalProse += " El contenido final fue completamente revisado, verificado y asumido por los autores.";
+      }
     } else {
-      finalProse += proseClauses.slice(0, -1).join("; ") + "; y " + proseClauses[proseClauses.length - 1] + ".";
-    }
+      // FORMATO DESCRIPTIVO / EXTENSO
+      let proseClauses = [];
+      for (let [tool, uses] of Object.entries(toolMap)) {
+        if (uses.length === 1) {
+          proseClauses.push(`${tool} para ${uses[0].verb} (nivel de aporte ${uses[0].aporteTexto})`);
+        } else {
+          let subTasks = uses.map(u => `${u.verb} [aporte ${u.aporteTexto}]`);
+          let subTasksText = subTasks.slice(0, -1).join(", ") + " y " + subTasks[subTasks.length - 1];
+          proseClauses.push(`${tool} para múltiples tareas: ${subTasksText}`);
+        }
+      }
 
-    if (includeSupervision) {
-      finalProse += " Todos los resultados e información asistidos por IA fueron revisados, verificados y validados minuciosamente por los autores, quienes asumen plena responsabilidad por la precisión, coherencia e integridad del contenido publicado.";
+      finalProse = "Declaración de uso de IA: Los autores declaran haber utilizado ";
+      if (proseClauses.length === 1) {
+        finalProse += proseClauses[0] + ".";
+      } else {
+        finalProse += proseClauses.slice(0, -1).join("; ") + "; y " + proseClauses[proseClauses.length - 1] + ".";
+      }
+
+      if (includeSupervision) {
+        finalProse += " Todos los resultados e información asistidos por IA fueron revisados, verificados y validados minuciosamente por los autores, quienes asumen plena responsabilidad por la precisión, coherencia e integridad del contenido publicado.";
+      }
     }
 
     // 2. Generación de fragmentos SVG
