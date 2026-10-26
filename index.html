@@ -429,7 +429,7 @@
     <div id="dynamicContainer" class="dynamic-fields"></div>
 
     <div class="output-section">
-      <h3>2. Resultados Generados:</h3>
+      <h3 style="margin-top: 0; color: #38bdf8; font-size: 1.2rem;" id="resultsTitleHeader">3. Resultados Generados:</h3>
       
       <div class="output-header">
         <label style="color:#94a3b8">Texto Legible para el Manuscrito (MS Word / OJS / Secciones finales):</label>
@@ -463,7 +463,7 @@
   <div id="tab-info" class="tab-content">
     <div class="info-card">
       <h3>Finalidad del Toolkit</h3>
-      <p>El propósito de esta herramienta es promover la transparencia y la integridad académica en las publicaciones de la Editorial Tecnológica de Costa Rica. Permite a los autores declarar de forma estandarizada el uso de herramientas de IA Generativa y Asistiva, proporcionando tanto el texto formal para el manuscrito como insignias pictográficas descargables en SVG para maquetación en InDesign o web.</p>
+      <p>El propósito de esta herramienta es promover la **transparencia y la integridad académica** en las publicaciones de la Editorial Tecnológica de Costa Rica. Permite a los autores declarar de forma estandarizada el uso de herramientas de IA Generativa y Asistiva, proporcionando tanto el texto formal para el manuscrito como insignias pictográficas descargables en SVG para maquetación en InDesign o web.</p>
     </div>
 
     <div class="info-card">
@@ -540,7 +540,6 @@
         <p><strong>Dependencia:</strong> Editorial Tecnológica de Costa Rica</p>
         <p><strong>Institución:</strong> Instituto Tecnológico de Costa Rica (TEC)</p>
         <p><strong>Encargada:</strong> Ing. Alexa Ramírez-Vega</p>
-
         <p><strong>Correo electrónico:</strong> <a href="mailto:alramirez@tec.ac.cr" style="color: var(--accent);">alramirez@tec.ac.cr</a></p>
       </div>
     </div>
@@ -566,7 +565,7 @@
       <h4 style="color: var(--primary); margin-top: 15px;">Licencia y Uso Libre</h4>
       <p>Esta aplicación y su familia de insignias vectoriales SVG son de código abierto y pueden ser utilizadas libremente por autores, editores y revistas académicas para promover la divulgación responsable de la IA en la investigación.</p>
 
-      <p style="font-size: 0.85rem; color: #64748b; margin-top: 20px;">Versión 3.3 · 2026</p>
+      <p style="font-size: 0.85rem; color: #64748b; margin-top: 20px;">Versión 3.4 · 2026</p>
     </div>
   </div>
 
@@ -604,14 +603,14 @@
     },
     'IA-IMG': { 
       code_es: 'IMG', code_en: 'IMG',
-      title_es: 'Imágenes / Gráficos',
+      title: 'Imágenes / Gráficos',
       shortTitle_es: 'imágenes', shortTitle_en: 'visuals',
       defaultTool: 'Midjourney v6', 
       verb_es: 'la generación de recursos visuales', verb_en: 'visual assets generation' 
     },
     'IA-DOC': { 
       code_es: 'DOC', code_en: 'DOC',
-      title_es: 'Búsqueda bibliográfica',
+      title: 'Búsqueda bibliográfica',
       shortTitle_es: 'búsqueda bibliográfica', shortTitle_en: 'literature search',
       defaultTool: 'SciSpace', 
       verb_es: 'la búsqueda y organización bibliográfica', verb_en: 'literature search and organization' 
@@ -653,6 +652,8 @@
     if (selected.length > 0) {
       container.innerHTML = '<div class="section-title">2. Especifique la herramienta y el nivel de aporte:</div>';
     }
+
+    generateResult();
 
     selected.forEach(cb => {
       const code = cb.value;
