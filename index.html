@@ -24,7 +24,7 @@
     }
 
     .container {
-      max-width: 850px;
+      max-width: 880px;
       margin: 0 auto;
       background: var(--card-bg);
       padding: 30px;
@@ -32,33 +32,79 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
     h1 {
       color: var(--primary);
       font-size: 1.8rem;
-      margin-top: 0;
-      border-bottom: 2px solid var(--bg);
-      padding-bottom: 12px;
+      margin: 0;
     }
 
     p.subtitle {
       color: #606266;
       font-size: 0.95rem;
-      margin-bottom: 25px;
+      margin: 5px 0 0 0;
     }
 
+    /* PESTAÑAS (TABS) */
+    .tabs-nav {
+      display: flex;
+      gap: 5px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #606266;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--accent);
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* FORMULARIO Y OPCIONES */
     .section-title {
       font-weight: bold;
       color: var(--primary);
       margin-top: 20px;
       margin-bottom: 10px;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
     .options-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 12px;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .checkbox-card {
@@ -85,17 +131,31 @@
       cursor: pointer;
     }
 
+    .config-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
     .supervision-box {
       background: #eef6ff;
       border: 1px solid #b3d8ff;
       border-left: 4px solid #0073e6;
       padding: 12px 15px;
       border-radius: 6px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 0.9rem;
+    }
+
+    .url-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
     }
 
     .dynamic-fields {
@@ -138,7 +198,7 @@
       margin-bottom: 4px;
     }
 
-    input[type="text"], select {
+    input[type="text"], input[type="url"], select {
       width: 100%;
       padding: 8px 10px;
       border: 1px solid var(--border);
@@ -147,6 +207,7 @@
       box-sizing: border-box;
     }
 
+    /* SALIDAS */
     .output-section {
       margin-top: 30px;
       background: #1e293b;
@@ -165,7 +226,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .format-selector {
@@ -173,8 +236,8 @@
       color: #f1f5f9;
       border: 1px solid #475569;
       border-radius: 4px;
-      padding: 4px 8px;
-      font-size: 0.8rem;
+      padding: 5px 10px;
+      font-size: 0.85rem;
     }
 
     .output-box {
@@ -235,101 +298,333 @@
     .btn-download:hover {
       background: #059669;
     }
+
+    /* ESTILOS INFO Y TABLAS */
+    .info-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .info-card h3 {
+      color: var(--primary);
+      margin-top: 0;
+    }
+
+    .nom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    .nom-table th, .nom-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .nom-table th {
+      background: #edf2f7;
+      color: var(--primary);
+    }
+
+    .badge-tag {
+      background: var(--primary);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-weight: bold;
+    }
+
+    .dot-sample {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .contact-box {
+      background: #eef6ff;
+      border-left: 4px solid var(--accent);
+      padding: 20px;
+      border-radius: 6px;
+    }
+
+    .contact-box p {
+      margin: 8px 0;
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>Toolkit de Declaración de IA</h1>
-  <p class="subtitle">Seleccione el propósito de uso y la herramienta para generar la declaración consolidada con cláusula de responsabilidad autoral y sus insignias pictográficas.</p>
-
-  <div class="section-title">1. Indique el propósito o fin con el que utilizó herramientas de IA:</div>
-  <div class="options-grid">
-    <label class="checkbox-card">
-      <input type="checkbox" id="chk_no" onchange="toggleNoUse()">
-      <span><strong>Sin uso de IA</strong> (IA-NO)</span>
-    </label>
-    <label class="checkbox-card use-chk">
-      <input type="checkbox" value="IA-EST" id="chk_est" onchange="updateForm()">
-      <span>Revisión gramatical / Estilo</span>
-    </label>
-    <label class="checkbox-card use-chk">
-      <input type="checkbox" value="IA-RED" id="chk_red" onchange="updateForm()">
-      <span>Apoyo en Redacción</span>
-    </label>
-    <label class="checkbox-card use-chk">
-      <input type="checkbox" value="IA-TRAD" id="chk_trad" onchange="updateForm()">
-      <span>Traducción de textos</span>
-    </label>
-    <label class="checkbox-card use-chk">
-      <input type="checkbox" value="IA-DAT" id="chk_dat" onchange="updateForm()">
-      <span>Análisis de datos</span>
-    </label>
-    <label class="checkbox-card use-chk">
-      <input type="checkbox" value="IA-IMG" id="chk_img" onchange="updateForm()">
-      <span>Imágenes / Gráficos</span>
-    </label>
-    <label class="checkbox-card use-chk">
-      <input type="checkbox" value="IA-DOC" id="chk_doc" onchange="updateForm()">
-      <span>Búsqueda bibliográfica</span>
-    </label>
-  </div>
-
-  <div class="supervision-box" id="supervisionContainer">
-    <input type="checkbox" id="chk_supervision" checked onchange="generateResult()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-    <label for="chk_supervision" style="margin: 0; cursor: pointer; font-weight: normal; color: var(--primary);">
-      <strong>Incluir cláusula e insignia de supervisión autoral:</strong> Declara que los autores revisaron minuciosamente, validaron y asumen plena responsabilidad por el contenido final generado o asistido por IA.
-    </label>
-  </div>
-
-  <div id="dynamicContainer" class="dynamic-fields"></div>
-
-  <div class="output-section">
-    <h3>2. Declaración generada:</h3>
-    
-    <div class="output-header">
-      <label style="color:#94a3b8">Texto Legible para el Manuscrito (MS Word / Secciones finales):</label>
-      <select id="textFormatSelect" class="format-selector" onchange="generateResult()">
-        <option value="concise" selected>Estilo Conciso / Resumido</option>
-        <option value="descriptive">Estilo Descriptivo / Extenso</option>
-      </select>
-    </div>
-    
-    <div class="output-box" id="textOutput">Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la elaboración de este trabajo.</div>
-    <div class="btn-group">
-      <button class="btn-copy" onclick="copyToClipboard('textOutput')">Copiar Texto Legible</button>
-    </div>
-
-    <br>
-    <label style="color:#94a3b8">Insignia Pictográfica Modular (Gráfico SVG para InDesign / OJS / PDF):</label>
-    <div class="badge-container" id="visualPreview"></div>
-    <div class="btn-group">
-      <button class="btn-download" onclick="downloadSVG()">Descargar Archivo SVG</button>
+  <div class="header-bar">
+    <div>
+      <h1>Toolkit de Declaración de IA</h1>
+      <p class="subtitle">Editorial Tecnológica de Costa Rica</p>
     </div>
   </div>
+
+  <!-- PESTAÑAS NAVEGACIÓN -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" id="tabbtn-generator" onclick="switchTab('tab-generator')">Generador</button>
+    <button class="tab-btn" id="tabbtn-info" onclick="switchTab('tab-info')">Finalidad y Nomenclatura</button>
+    <button class="tab-btn" id="tabbtn-contact" onclick="switchTab('tab-contact')">Contacto y Soporte</button>
+    <button class="tab-btn" id="tabbtn-about" onclick="switchTab('tab-about')">Acerca de...</button>
+  </div>
+
+  <!-- PESTAÑA 1: GENERADOR -->
+  <div id="tab-generator" class="tab-content active">
+    <div class="section-title">1. Indique el propósito con el que utilizó herramientas de IA:</div>
+    <div class="options-grid">
+      <label class="checkbox-card">
+        <input type="checkbox" id="chk_no" onchange="toggleNoUse()">
+        <span><strong>Sin uso de IA</strong> (IA-NO)</span>
+      </label>
+      <label class="checkbox-card use-chk">
+        <input type="checkbox" value="IA-EST" id="chk_est" onchange="updateForm()">
+        <span>Revisión gramatical / Estilo</span>
+      </label>
+      <label class="checkbox-card use-chk">
+        <input type="checkbox" value="IA-RED" id="chk_red" onchange="updateForm()">
+        <span>Apoyo en Redacción</span>
+      </label>
+      <label class="checkbox-card use-chk">
+        <input type="checkbox" value="IA-TRAD" id="chk_trad" onchange="updateForm()">
+        <span>Traducción de textos</span>
+      </label>
+      <label class="checkbox-card use-chk">
+        <input type="checkbox" value="IA-DAT" id="chk_dat" onchange="updateForm()">
+        <span>Análisis de datos</span>
+      </label>
+      <label class="checkbox-card use-chk">
+        <input type="checkbox" value="IA-IMG" id="chk_img" onchange="updateForm()">
+        <span>Imágenes / Gráficos</span>
+      </label>
+      <label class="checkbox-card use-chk">
+        <input type="checkbox" value="IA-DOC" id="chk_doc" onchange="updateForm()">
+        <span>Búsqueda bibliográfica</span>
+      </label>
+    </div>
+
+    <div class="config-box">
+      <div class="supervision-box" id="supervisionContainer">
+        <input type="checkbox" id="chk_supervision" checked onchange="generateResult()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+        <label for="chk_supervision" style="margin: 0; cursor: pointer; font-weight: normal; color: var(--primary);">
+          <strong>Incluir cláusula e insignia de supervisión autoral:</strong> Declara que los autores revisaron, validaron y asumen plena responsabilidad por el contenido final.
+        </label>
+      </div>
+
+      <div class="url-input-group">
+        <label for="txt_policy_url">Enlace / URL a la Política Institucional o de la Revista (Opcional):</label>
+        <input type="url" id="txt_policy_url" placeholder="https://editorial.tec.ac.cr/lineamientos-ia" oninput="generateResult()">
+      </div>
+    </div>
+
+    <div id="dynamicContainer" class="dynamic-fields"></div>
+
+    <div class="output-section">
+      <h3>2. Resultados Generados:</h3>
+      
+      <div class="output-header">
+        <label style="color:#94a3b8">Texto Legible para el Manuscrito (MS Word / OJS / Secciones finales):</label>
+        <div style="display: flex; gap: 10px;">
+          <select id="outputLangSelect" class="format-selector" onchange="generateResult()">
+            <option value="es" selected>Idioma Declaración: Español</option>
+            <option value="en">Idioma Declaración: Inglés</option>
+          </select>
+          <select id="textFormatSelect" class="format-selector" onchange="generateResult()">
+            <option value="concise" selected>Estilo Conciso / Resumido</option>
+            <option value="descriptive">Estilo Descriptivo / Extenso</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="output-box" id="textOutput">Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la elaboración de este trabajo.</div>
+      <div class="btn-group">
+        <button class="btn-copy" onclick="copyToClipboard('textOutput')">Copiar Texto Legible</button>
+      </div>
+
+      <br>
+      <label style="color:#94a3b8">Insignia Pictográfica Modular (Gráfico SVG para InDesign / PDF / Web):</label>
+      <div class="badge-container" id="visualPreview"></div>
+      <div class="btn-group">
+        <button class="btn-download" onclick="downloadSVG()">Descargar Archivo SVG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PESTAÑA 2: FINALIDAD Y NOMENCLATURA -->
+  <div id="tab-info" class="tab-content">
+    <div class="info-card">
+      <h3>Finalidad del Toolkit</h3>
+      <p>El propósito de esta herramienta es promover la transparencia y la integridad académica en las publicaciones de la Editorial Tecnológica de Costa Rica. Permite a los autores declarar de forma estandarizada el uso de herramientas de IA Generativa y Asistiva, proporcionando tanto el texto formal para el manuscrito como insignias pictográficas descargables en SVG para maquetación en InDesign o web.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>Explicación de la Nomenclatura e Insignias</h3>
+      <p>Las insignias visuales utilizan un círculo con la sigla interior y código de color para resumir de manera inmediata la intervención de la IA:</p>
+      
+      <table class="nom-table">
+        <thead>
+          <tr>
+            <th>Código (ES / EN)</th>
+            <th>Propósito / Categoría</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge-tag">IA-NO / NO-AI</span></td>
+            <td>Sin Uso de IA</td>
+            <td>Trabajo realizado 100% de forma humana sin asistencia de IA.</td>
+          </tr>
+          <tr>
+            <td><span class="badge-tag">IA-EST / AI-STY</span></td>
+            <td>Estilo y Corrección</td>
+            <td>Revisión ortográfica, corrección gramatical y mejoras lingüísticas.</td>
+          </tr>
+          <tr>
+            <td><span class="badge-tag">IA-RED / AI-WRT</span></td>
+            <td>Apoyo en Redacción</td>
+            <td>Asistencia en la estructuración o redacción de borradores.</td>
+          </tr>
+          <tr>
+            <td><span class="badge-tag">IA-TRAD / AI-TRN</span></td>
+            <td>Traducción</td>
+            <td>Traducción o localización de fragmentos del manuscrito.</td>
+          </tr>
+          <tr>
+            <td><span class="badge-tag">IA-DAT / AI-DAT</span></td>
+            <td>Análisis de Datos</td>
+            <td>Procesamiento de datos, ejecución de scripts o modelos.</td>
+          </tr>
+          <tr>
+            <td><span class="badge-tag">IA-IMG / AI-IMG</span></td>
+            <td>Imágenes / Gráficos</td>
+            <td>Generación o edición asistida de figuras y gráficos.</td>
+          </tr>
+          <tr>
+            <td><span class="badge-tag">IA-DOC / AI-DOC</span></td>
+            <td>Búsqueda Bibliográfica</td>
+            <td>Mapeo de literatura y síntesis de referencias.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 20px; color: var(--primary);">Escala de Nivel de Aporte (Indicadores de Color)</h4>
+      <p>El color del círculo principal identifica el grado de contribución de la herramienta:</p>
+      <ul>
+        <li><span class="dot-sample" style="background:#64748B;"></span> <strong>Gris (Bajo / Low):</strong> Uso menor (sugerencias ortográficas o búsquedas puntuales).</li>
+        <li><span class="dot-sample" style="background:#D97706;"></span> <strong>Naranja (Medio / Medium):</strong> Asistencia intermedia (borradores compartidos o ajustes de traducción).</li>
+        <li><span class="dot-sample" style="background:#DC2626;"></span> <strong>Rojo (Alto / High):</strong> Procesamiento principal o generación de material base.</li>
+      </ul>
+
+      <h4 style="margin-top: 20px; color: var(--primary);">Insignia "Human Verified / Verificación Humana"</h4>
+      <p>La insignia verde certifica que la autoría humana ha revisado, verificado y asumido plena responsabilidad por la precisión e integridad de la información producida o asistida por la IA.</p>
+    </div>
+  </div>
+
+  <!-- PESTAÑA 3: CONTACTO Y SOPORTE -->
+  <div id="tab-contact" class="tab-content">
+    <div class="info-card">
+      <h3>Soporte Editorial y Consultas</h3>
+      <p>Si tiene dudas sobre la aplicación de estas políticas en su manuscrito, o requiere asistencia técnica con los archivos SVG para maquetación en InDesign o OJS, puede comunicarse con el equipo técnico:</p>
+      
+      <div class="contact-box">
+        <p><strong>Dependencia:</strong> Editorial Tecnológica de Costa Rica</p>
+        <p><strong>Institución:</strong> Instituto Tecnológico de Costa Rica (TEC)</p>
+        <p><strong>Encargada:</strong> Ing. Alexa Ramírez-Vega</p>
+
+        <p><strong>Correo electrónico:</strong> <a href="mailto:alramirez@tec.ac.cr" style="color: var(--accent);">alramirez@tec.ac.cr</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PESTAÑA 4: ACERCA DE... -->
+  <div id="tab-about" class="tab-content">
+    <div class="info-card">
+      <h3>Acerca de esta Herramienta</h3>
+      <p>El <strong>Toolkit de Declaración de Inteligencia Artificial</strong> es una iniciativa desarrollada para facilitar la transparencia en la comunicación científica y editorial.</p>
+      
+      <h4 style="color: var(--primary); margin-top: 15px;">Créditos e Institución</h4>
+      <p>Desarrollado para la <strong>Editorial Tecnológica de Costa Rica</strong> del <strong>Instituto Tecnológico de Costa Rica (TEC)</strong>, apoyando la implementación de los <em>"Lineamientos para el uso responsable de inteligencia artificial en libros y revistas"</em>.</p>
+
+      <h4 style="color: var(--primary); margin-top: 15px;">Estándares de Referencia</h4>
+      <p>El diseño de las insignias y la estructura sintáctica de declaración se basan en recomendaciones internacionales de las siguientes organizaciones:</p>
+      <ul>
+        <li><strong>COPE (Committee on Publication Ethics):</strong> Directrices sobre responsabilidad autoral e IA.</li>
+        <li><strong>ICMJE:</strong> Requisitos de transparencia en el uso de asistencias tecnológicas.</li>
+        <li><strong>C2PA (Content Credentials):</strong> Estándar universal de procedencia e iconografía para contenido generado por IA.</li>
+      </ul>
+
+      <h4 style="color: var(--primary); margin-top: 15px;">Licencia y Uso Libre</h4>
+      <p>Esta aplicación y su familia de insignias vectoriales SVG son de código abierto y pueden ser utilizadas libremente por autores, editores y revistas académicas para promover la divulgación responsable de la IA en la investigación.</p>
+
+      <p style="font-size: 0.85rem; color: #64748b; margin-top: 20px;">Versión 3.3 · 2026</p>
+    </div>
+  </div>
+
 </div>
 
 <script>
   const categories = {
-    'IA-EST': { title: 'Revisión gramatical / Estilo', shortTitle: 'estilo', defaultTool: 'ChatGPT-4o', verb: 'la revisión gramatical y de estilo' },
-    'IA-RED': { title: 'Apoyo en Redacción', shortTitle: 'redacción', defaultTool: 'ChatGPT-4o', verb: 'el apoyo en la estructura y redacción' },
-    'IA-TRAD': { title: 'Traducción de textos', shortTitle: 'traducción', defaultTool: 'DeepL Pro', verb: 'la traducción de secciones' },
-    'IA-DAT': { title: 'Análisis de datos', shortTitle: 'análisis de datos', defaultTool: 'Python / Scikit-learn', verb: 'el procesamiento y análisis de datos' },
-    'IA-IMG': { title: 'Generación de imágenes / Gráficos', shortTitle: 'imágenes', defaultTool: 'Midjourney v6', verb: 'la generación de recursos visuales' },
-    'IA-DOC': { title: 'Búsqueda bibliográfica', shortTitle: 'búsqueda bibliográfica', defaultTool: 'SciSpace', verb: 'la búsqueda y organización bibliográfica' }
+    'IA-EST': { 
+      code_es: 'EST', code_en: 'STY',
+      title: 'Revisión gramatical / Estilo',
+      shortTitle_es: 'estilo', shortTitle_en: 'style',
+      defaultTool: 'ChatGPT-4o', 
+      verb_es: 'la revisión gramatical y de estilo', verb_en: 'grammar and style revision' 
+    },
+    'IA-RED': { 
+      code_es: 'RED', code_en: 'WRT',
+      title: 'Apoyo en Redacción',
+      shortTitle_es: 'redacción', shortTitle_en: 'writing',
+      defaultTool: 'ChatGPT-4o', 
+      verb_es: 'el apoyo en la estructura y redacción', verb_en: 'writing and drafting assistance' 
+    },
+    'IA-TRAD': { 
+      code_es: 'TRAD', code_en: 'TRN',
+      title: 'Traducción de textos',
+      shortTitle_es: 'traducción', shortTitle_en: 'translation',
+      defaultTool: 'DeepL Pro', 
+      verb_es: 'la traducción de secciones', verb_en: 'section translation' 
+    },
+    'IA-DAT': { 
+      code_es: 'DAT', code_en: 'DAT',
+      title: 'Análisis de datos',
+      shortTitle_es: 'análisis de datos', shortTitle_en: 'data analysis',
+      defaultTool: 'Python / Scikit-learn', 
+      verb_es: 'el procesamiento y análisis de datos', verb_en: 'data processing and analysis' 
+    },
+    'IA-IMG': { 
+      code_es: 'IMG', code_en: 'IMG',
+      title_es: 'Imágenes / Gráficos',
+      shortTitle_es: 'imágenes', shortTitle_en: 'visuals',
+      defaultTool: 'Midjourney v6', 
+      verb_es: 'la generación de recursos visuales', verb_en: 'visual assets generation' 
+    },
+    'IA-DOC': { 
+      code_es: 'DOC', code_en: 'DOC',
+      title_es: 'Búsqueda bibliográfica',
+      shortTitle_es: 'búsqueda bibliográfica', shortTitle_en: 'literature search',
+      defaultTool: 'SciSpace', 
+      verb_es: 'la búsqueda y organización bibliográfica', verb_en: 'literature search and organization' 
+    }
   };
 
-  const svgIcons = {
-    'IA-NO': '<path d="M12 14a3 3 0 100-6 3 3 0 000 6zM5 19a7 7 0 0114 0" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none"/>',
-    'IA-EST': '<path d="M15 6l3 3L9 18H6v-3L15 6z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
-    'IA-RED': '<path d="M7 6h10M7 10h10M7 14h6M15 17l3 3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none"/>',
-    'IA-TRAD': '<path d="M5 8h10M10 5v3M7 16c2-1 3-3 4-6M13 16l3-8 3 8M14 14h4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
-    'IA-DAT': '<path d="M6 18v-4M12 18v-8M18 18v-12" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>',
-    'IA-IMG': '<circle cx="8.5" cy="8.5" r="1.5" fill="#ffffff"/><path d="M21 15l-5-5L5 21" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="3" y="3" width="18" height="18" rx="3" stroke="#ffffff" stroke-width="2" fill="none"/>',
-    'IA-DOC': '<path d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>'
-  };
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-  let rawSVGContent = '';
+    document.getElementById(tabId).classList.add('active');
+    document.getElementById('tabbtn-' + tabId.replace('tab-', '')).classList.add('active');
+  }
 
   function toggleNoUse() {
     const isNoUse = document.getElementById('chk_no').checked;
@@ -341,12 +636,7 @@
       if (isNoUse) cb.checked = false;
     });
 
-    if (isNoUse) {
-      supervisionBox.style.display = 'none';
-    } else {
-      supervisionBox.style.display = 'flex';
-    }
-
+    supervisionBox.style.display = isNoUse ? 'none' : 'flex';
     updateForm();
   }
 
@@ -398,15 +688,25 @@
     const visualPreview = document.getElementById('visualPreview');
     const includeSupervision = document.getElementById('chk_supervision').checked;
     const textFormat = document.getElementById('textFormatSelect').value;
+    const outputLang = document.getElementById('outputLangSelect').value; // 'es' o 'en'
+    const policyUrl = document.getElementById('txt_policy_url').value.trim();
 
     if (document.getElementById('chk_no').checked) {
-      textOutput.innerText = "Declaración de uso de IA: Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la preparación de este manuscrito.";
-      let singleSVG = generateCircularSVG("Sin uso de IA", [], true);
+      let noText = outputLang === 'es' 
+        ? "Declaración de uso de IA: Los autores declaran que no se utilizaron herramientas de inteligencia artificial en la preparación de este manuscrito."
+        : "AI Declaration: The authors declare that no artificial intelligence tools were used in the preparation of this manuscript.";
+      
+      if (policyUrl) {
+        noText += outputLang === 'es' ? ` [Política: ${policyUrl}]` : ` [Policy: ${policyUrl}]`;
+      }
+
+      let singleSVG = generateCircularSVG("Sin uso de IA", [], true, outputLang);
       visualPreview.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${singleSVG.width}" height="${singleSVG.height}" viewBox="0 0 ${singleSVG.width} ${singleSVG.height}">
           ${singleSVG.code}
         </svg>`;
       rawSVGContent = wrapInSingleSVG([singleSVG]);
+      textOutput.innerText = noText;
       return;
     }
 
@@ -418,7 +718,6 @@
       return;
     }
 
-    // --- CONSOLIDACIÓN POR HERRAMIENTA ---
     let toolMap = {};
 
     selected.forEach(cb => {
@@ -431,61 +730,68 @@
       }
       
       toolMap[toolName].push({
-        code: code,
-        shortTitle: categories[code].shortTitle,
-        verb: categories[code].verb,
-        aporteTexto: obtenerTextoAporteTexto(aporte),
+        codeKey: code,
+        codeDisplay: outputLang === 'es' ? categories[code].code_es : categories[code].code_en,
+        shortTitle: outputLang === 'es' ? categories[code].shortTitle_es : categories[code].shortTitle_en,
+        verb: outputLang === 'es' ? categories[code].verb_es : categories[code].verb_en,
         aporte: aporte
       });
     });
 
-    // 1. Redacción del Texto Legible
     let finalProse = "";
 
     if (textFormat === 'concise') {
-      // FORMATO CONCISO / RESUMIDO
       let toolSummaries = [];
       for (let [tool, uses] of Object.entries(toolMap)) {
-        let tasks = uses.map(u => `${u.shortTitle} [${u.code}, aporte ${u.aporteTexto}]`).join(", ");
+        let tasks = uses.map(u => `${u.shortTitle} [${u.codeDisplay}]`).join(", ");
         toolSummaries.push(`${tool} (${tasks})`);
       }
-      finalProse = "Uso de IA: " + toolSummaries.join("; ") + ".";
+      finalProse = (outputLang === 'es' ? "Uso de IA: " : "AI Use: ") + toolSummaries.join("; ") + ".";
       if (includeSupervision) {
-        finalProse += " El contenido final fue completamente revisado, verificado y asumido por los autores.";
+        finalProse += outputLang === 'es' 
+          ? " El contenido final fue completamente revisado, verificado y asumido por los autores."
+          : " The final content was fully reviewed, verified, and endorsed by the authors.";
       }
     } else {
-      // FORMATO DESCRIPTIVO / EXTENSO
       let proseClauses = [];
       for (let [tool, uses] of Object.entries(toolMap)) {
         if (uses.length === 1) {
-          proseClauses.push(`${tool} para ${uses[0].verb} (nivel de aporte ${uses[0].aporteTexto})`);
+          proseClauses.push(`${tool} ${outputLang === 'es' ? 'para' : 'for'} ${uses[0].verb}`);
         } else {
-          let subTasks = uses.map(u => `${u.verb} [aporte ${u.aporteTexto}]`);
-          let subTasksText = subTasks.slice(0, -1).join(", ") + " y " + subTasks[subTasks.length - 1];
-          proseClauses.push(`${tool} para múltiples tareas: ${subTasksText}`);
+          let subTasks = uses.map(u => `${u.verb}`);
+          let subTasksText = subTasks.slice(0, -1).join(", ") + (outputLang === 'es' ? " y " : " and ") + subTasks[subTasks.length - 1];
+          proseClauses.push(`${tool} ${outputLang === 'es' ? 'para múltiples tareas:' : 'for multiple tasks:'} ${subTasksText}`);
         }
       }
 
-      finalProse = "Declaración de uso de IA: Los autores declaran haber utilizado ";
+      finalProse = outputLang === 'es' 
+        ? "Declaración de uso de IA: Los autores declaran haber utilizado "
+        : "AI Declaration: The authors declare having used ";
+
       if (proseClauses.length === 1) {
         finalProse += proseClauses[0] + ".";
       } else {
-        finalProse += proseClauses.slice(0, -1).join("; ") + "; y " + proseClauses[proseClauses.length - 1] + ".";
+        finalProse += proseClauses.slice(0, -1).join("; ") + "; " + (outputLang === 'es' ? "y " : "and ") + proseClauses[proseClauses.length - 1] + ".";
       }
 
       if (includeSupervision) {
-        finalProse += " Todos los resultados e información asistidos por IA fueron revisados, verificados y validados minuciosamente por los autores, quienes asumen plena responsabilidad por la precisión, coherencia e integridad del contenido publicado.";
+        finalProse += outputLang === 'es'
+          ? " Todos los resultados e información asistidos por IA fueron revisados, verificados y validados minuciosamente por los autores, quienes asumen plena responsabilidad por la precisión, coherencia e integridad del contenido publicado."
+          : " All AI-assisted outcomes and information were thoroughly reviewed, verified, and validated by the authors, who take full responsibility for the accuracy, coherence, and integrity of the published content.";
       }
     }
 
-    // 2. Generación de fragmentos SVG
+    if (policyUrl) {
+      finalProse += outputLang === 'es' ? ` [Política: ${policyUrl}]` : ` [Policy: ${policyUrl}]`;
+    }
+
     let svgItems = [];
     for (let [toolName, uses] of Object.entries(toolMap)) {
-      svgItems.push(generateCircularSVG(toolName, uses, false));
+      svgItems.push(generateCircularSVG(toolName, uses, false, outputLang));
     }
 
     if (includeSupervision) {
-      svgItems.push(generateHumanVerifiedBadge());
+      svgItems.push(generateHumanVerifiedBadge(outputLang));
     }
 
     textOutput.innerText = finalProse;
@@ -499,26 +805,15 @@
     rawSVGContent = wrapInSingleSVG(svgItems);
   }
 
-  function obtenerTextoAporte(aporte) {
-    if (aporte === 'BA') return 'Bajo';
-    if (aporte === 'ME') return 'Medio';
-    return 'Alto';
-  }
-
-  function obtenerTextoAporteTexto(aporte) {
-    if (aporte === 'BA') return 'bajo';
-    if (aporte === 'ME') return 'medio';
-    return 'alto';
-  }
-
-  function generateHumanVerifiedBadge() {
+  function generateHumanVerifiedBadge(lang) {
+    let label = lang === 'es' ? 'HUMAN VERIFIED' : 'HUMAN-REVIEWED';
     return {
-      width: 160,
+      width: 155,
       height: 32,
       code: `
         <g>
-          <rect x="16" y="4" width="138" height="24" rx="12" fill="#065F46"/>
-          <text x="38" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="700">HUMAN VERIFIED</text>
+          <rect x="16" y="4" width="133" height="24" rx="12" fill="#065F46"/>
+          <text x="38" y="20" fill="#FFFFFF" font-family="-apple-system, sans-serif" font-size="9.5" font-weight="700">${label}</text>
           <circle cx="16" cy="16" r="14" fill="#059669" stroke="#FFFFFF" stroke-width="1.5"/>
           <g transform="translate(7, 7)">
             <path d="M13.5 4.5L6.5 11.5L3.5 8.5" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -527,17 +822,18 @@
     };
   }
 
-  function generateCircularSVG(toolName, uses, isNoUse) {
+  function generateCircularSVG(toolName, uses, isNoUse, lang) {
     if (isNoUse) {
+      let label = 'NO-AI';
       return {
-        width: 180,
+        width: 120,
         height: 32,
         code: `
           <g>
-            <circle cx="16" cy="16" r="14" fill="#475569" stroke="#64748B" stroke-width="2"/>
-            ${svgIcons['IA-NO']}
-            <rect x="36" y="4" width="138" height="24" rx="12" fill="#1E293B"/>
-            <text x="46" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="bold">IA-NO: Humano</text>
+            <circle cx="16" cy="16" r="14" fill="#475569" stroke="#64748B" stroke-width="1.5"/>
+            <text x="16" y="19.5" fill="#FFFFFF" font-family="-apple-system, sans-serif" font-size="8" font-weight="bold" text-anchor="middle">NO</text>
+            <rect x="36" y="4" width="78" height="24" rx="12" fill="#1E293B"/>
+            <text x="46" y="20" fill="#FFFFFF" font-family="-apple-system, sans-serif" font-size="9.5" font-weight="bold">${label}</text>
           </g>`.trim()
       };
     }
@@ -545,14 +841,10 @@
     if (uses.length === 1) {
       let u = uses[0];
       let colorAporte = u.aporte === 'BA' ? '#64748B' : (u.aporte === 'ME' ? '#D97706' : '#DC2626');
-      let textoAporte = obtenerTextoAporte(u.aporte);
-      let iconPath = svgIcons[u.code] || svgIcons['IA-RED'];
-      let labelText = `${u.code} · ${toolName} (${textoAporte})`;
-      let approxWidth = Math.max(160, Math.round(labelText.length * 7.2 + 45));
-
-      let dots = u.aporte === 'BA' ? '<circle cx="16" cy="27" r="1.5" fill="#FFFFFF"/>' :
-                 u.aporte === 'ME' ? '<circle cx="13" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="19" cy="27" r="1.5" fill="#FFFFFF"/>' :
-                 '<circle cx="10" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="16" cy="27" r="1.5" fill="#FFFFFF"/><circle cx="22" cy="27" r="1.5" fill="#FFFFFF"/>';
+      let shortCode = u.codeDisplay;
+      let labelText = `${toolName}`;
+      let approxWidth = Math.max(130, Math.round(labelText.length * 7.5 + 45));
+      let fontSize = shortCode.length > 3 ? '7' : '8.5';
 
       return {
         width: approxWidth,
@@ -560,42 +852,38 @@
         code: `
           <g>
             <rect x="16" y="4" width="${approxWidth - 18}" height="24" rx="12" fill="#002B49"/>
-            <text x="38" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">${u.code} · ${toolName} <tspan fill="${colorAporte}">(${textoAporte})</tspan></text>
+            <text x="38" y="20" fill="#FFFFFF" font-family="-apple-system, sans-serif" font-size="10" font-weight="600">${toolName}</text>
             <circle cx="16" cy="16" r="14" fill="${colorAporte}" stroke="#FFFFFF" stroke-width="1.5"/>
-            <g transform="translate(4, 4) scale(0.66)">${iconPath}</g>
-            ${dots}
+            <text x="16" y="19" fill="#FFFFFF" font-family="-apple-system, sans-serif" font-size="${fontSize}" font-weight="bold" text-anchor="middle">${shortCode}</text>
           </g>`.trim()
       };
     }
 
     let circlesHTML = '';
-    let codesText = [];
+    let startTextX = 16 + (uses.length * 28) + 8;
+    let labelText = `${toolName}`;
+    let approxWidth = Math.max(startTextX + 20, Math.round(startTextX + (labelText.length * 7) + 15));
 
     uses.forEach((u, idx) => {
-      let cx = 16 + (idx * 24);
+      let cx = 16 + (idx * 28);
       let colorAporte = u.aporte === 'BA' ? '#64748B' : (u.aporte === 'ME' ? '#D97706' : '#DC2626');
-      let iconPath = svgIcons[u.code] || svgIcons['IA-RED'];
+      let shortCode = u.codeDisplay;
+      let fontSize = shortCode.length > 3 ? '6.5' : '8';
 
       circlesHTML += `
         <g>
           <circle cx="${cx}" cy="16" r="13" fill="${colorAporte}" stroke="#FFFFFF" stroke-width="1.5"/>
-          <g transform="translate(${cx - 12}, 4) scale(0.66)">${iconPath}</g>
+          <text x="${cx}" y="19" fill="#FFFFFF" font-family="-apple-system, sans-serif" font-size="${fontSize}" font-weight="bold" text-anchor="middle">${shortCode}</text>
         </g>`;
-      
-      codesText.push(`${u.code} (${obtenerTextoAporte(u.aporte)})`);
     });
 
-    let startTextX = 16 + (uses.length * 24) + 8;
-    let labelText = `${toolName} · ${codesText.join(' | ')}`;
-    let totalWidth = Math.round(startTextX + (labelText.length * 6.8) + 15);
-
     return {
-      width: totalWidth,
+      width: approxWidth,
       height: 32,
       code: `
         <g>
-          <rect x="16" y="4" width="${totalWidth - 18}" height="24" rx="12" fill="#002B49"/>
-          <text x="${startTextX}" y="20" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">${toolName} · <tspan fill="#94A3B8">${codesText.join(' | ')}</tspan></text>
+          <rect x="16" y="4" width="${approxWidth - 18}" height="24" rx="12" fill="#002B49"/>
+          <text x="${startTextX}" y="20" fill="#FFFFFF" font-family="-apple-system, sans-serif" font-size="10" font-weight="600">${toolName}</text>
           ${circlesHTML}
         </g>`.trim()
     };
@@ -633,18 +921,20 @@
       return;
     }
 
+    const outputLang = document.getElementById('outputLangSelect').value;
     const blob = new Blob([rawSVGContent], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'insignia_declaracion_IA.svg';
+    link.download = `insignia_declaracion_IA_${outputLang}.svg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
 
-  generateResult();
+  // Inicialización
+  updateForm();
 </script>
 
 </body>
